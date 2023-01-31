@@ -1,0 +1,11 @@
+[package]
+name = "resnet18_ailia_classifier"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ailia = { path="../../rust_wrapper/" }
+image = "*"
+anyhow = "*"

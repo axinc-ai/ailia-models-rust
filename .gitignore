@@ -15,4 +15,4 @@ Cargo.lock
 
 *.onnx
 *.prototxt
-
+*.DS_Store

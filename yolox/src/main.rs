@@ -1,8 +1,7 @@
 use ailia::prelude::*;
 
-use opencv::core::{Mat, Point, Rect, Scalar, Vector};
+use opencv::core::{Mat, Point, Rect, Scalar};
 use opencv::highgui;
-use opencv::imgcodecs::imwrite;
 use opencv::imgproc::{cvt_color, put_text, rectangle, COLOR_BGR2RGBA, COLOR_RGBA2BGR};
 use opencv::prelude::MatTraitConstManual;
 use opencv::videoio::{self, VideoCaptureTrait, VideoCaptureTraitConst};
@@ -152,13 +151,11 @@ fn main() -> Result<()> {
 
             cvt_color(&frame_clone, &mut frame, COLOR_BGR2RGBA, 0)?;
 
-            detector.compute_opencv_mat(&frame, 0.4, 0.45)?;
-
             let size = frame.size()?;
 
-            let num_obj = detector.get_object_count()?;
-            for i in 0..num_obj {
-                let obj = detector.get_object(i, ailia::detector::AILIA_DETECTOR_OBJECT_VERSION)?;
+            let objs = detector.predict_opencv_mat(&frame, 0.45, 0.4)?;
+
+            for obj in objs {
                 plot_image(
                     &mut frame,
                     &obj,

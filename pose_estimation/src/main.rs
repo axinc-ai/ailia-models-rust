@@ -1,4 +1,3 @@
-use ailia;
 use ailia::prelude::*;
 use anyhow::Result;
 
@@ -22,12 +21,11 @@ fn plot_point(img: &mut Mat, point: KeyPoint, img_size: Size) {
         Point::new(x_pxl as i32, y_pxl as i32)
     };
     let point = point_to_pxl(point);
-    println!("point {:?}", point);
     circle(img, point, 5, red, 10, 0, 0).unwrap()
 }
 
 fn main() -> Result<()> {
-    let pose_estimator = PoseEstimatorBuilder::default()
+    let pose_estimator: PoseEstimator<Pose> = PoseEstimatorBuilder::default()
         .prototxt("../models/lightweight-human-pose-estimation.onnx.prototxt")
         .onnx("../models/lightweight-human-pose-estimation.onnx")
         .algorithm(AILIA_POSE_ESTIMATOR_ALGORITHM_LW_HUMAN_POSE)
@@ -51,9 +49,8 @@ fn main() -> Result<()> {
             let mut frame_resize = Mat::default();
             let target_size = Size::new(WIDTH.try_into()?, HEIGHT.try_into()?);
             resize(&frame, &mut frame_resize, target_size, 0., 0., 0)?;
-            pose_estimator.compute(frame_resize.data() as *const std::os::raw::c_void, WIDTH * 3, WIDTH, HEIGHT, ailia::AILIA_IMAGE_FORMAT_BGR)?;
+            let poses = pose_estimator.predict(frame_resize.data() as *const std::os::raw::c_void, WIDTH * 3, WIDTH, HEIGHT, ailia::AILIA_IMAGE_FORMAT_BGR)?;
 
-            let poses = pose_estimator.get_poses()?;
             let size = frame.size()?;
 
             for pose in poses {

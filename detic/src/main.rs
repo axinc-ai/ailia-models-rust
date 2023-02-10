@@ -7,6 +7,8 @@ use image::RgbImage;
 use image::imageops::resize;
 use image::io::Reader as ImageReader;
 
+use ndarray::prelude::*;
+
 fn transpose(v: Vec<u8>, height: u32, width: u32) -> Vec<u8> {
     let mut res = v.clone();
     let src_stride = (width * 3, 3, 1);
@@ -56,42 +58,9 @@ fn preprocess(img: RgbImage, max_width: u32) -> (Vec<f32>, [i64;2]) {
     (vec, [resize_height as i64, resize_width as i64])
 }
 
-/// ネットワークの推論を行う
-fn predict(net: &Network, img: Vec<f32>, shape_hw: [i64;2]) -> Result<Vec<Vec<f32>>> {
-    let img_idx = net.get_input_blob_index_by_index(0)?;
-    // let shape_idx = net.get_input_blob_index_by_index(1)?;
-
-    net.set_input_blob_shape(Shape { x: 3, y: shape_hw[0] as u32, z: shape_hw[1] as u32, w: 1, dim: 3 }, img_idx)?;
-    // net.set_input_blob_shape(Shape { x: 1, y: 3, z: shape_hw[0] as u32, w: shape_hw[1] as u32, dim: 4 }, img_idx)?;
-    println!("shape");
-
-    // net.set_input_data_blob(shape_hw.as_ptr(), 2, shape_idx)?;
-    net.set_input_data_blob(img.as_ptr(), img.len() as u32, img_idx)?;
-
-    let output_vec = net.get_output_indexs()?;
-    for idx in output_vec {
-        let shape = net.get_blob_shape(idx)?;
-        println!("shape {:?}", shape);
-    }
-
-    net.update()?;
-
-    let output_vec = net.get_output_indexs()?;
-    for idx in output_vec {
-        let shape = net.get_blob_shape(idx)?;
-        println!("shape {:?}", shape);
-    }
-
-    Ok(
-        net.get_output_indexs()?
-        .iter()
-        .map(|idx| net.get_output_blob_by_index(*idx).unwrap())
-        .collect()
-    )
-}
+fn draw_bb()
 
 fn main() -> Result<()> {
-    println!("net init");
     let net = Network::new(
         ailia::AILIA_ENVIRONMENT_ID_AUTO, 
         ailia::AILIA_MULTITHREAD_AUTO.try_into()?, 
@@ -100,8 +69,27 @@ fn main() -> Result<()> {
     )?;
     let img = ImageReader::open("./desk.jpg")?.decode()?;
     let img = img.to_rgb8();
-    let (input_vec, input_vec_shape_h_w) = preprocess(img, 800);
-    let output = predict(&net, input_vec, input_vec_shape_h_w)?;
-    println!("{:?}", output);
+    let (input_vec, shape_hw) = preprocess(img, 800);
+    let img_idx = dbg!(net.get_input_blob_index_by_index(0)?);
+
+    let shape = Shape { x: shape_hw[1] as u32, y: shape_hw[0] as u32, z: 3, w: 1, dim: 4 };
+    net.set_input_blob_shape(shape, img_idx)?;
+
+    let shape = net.get_input_shape()?;
+    println!("{:?}", shape);
+
+    net.set_input_data_blob(input_vec.as_ptr(), input_vec.len() as u32, img_idx)?;
+    println!("set blob");
+
+    net.update()?;
+
+    let output_vec = net.get_output_indexs()? ;
+    let boxes_idx = net.get_output_blob_index_by_index(0)?;
+    let boxes_shape = net.get_blob_shape(boxes_idx)?;
+    println!("boxes shape {:?}", boxes_shape);
+    let boxes_num_elm = boxes_shape.num_elms();
+    let boxes: Vec<f32> = net.get_output_blob_by_index(boxes_idx)?;
+    let boxes = Array::from_shape_vec([27, 4], boxes);
+
     Ok(())
 }

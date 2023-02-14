@@ -1,11 +1,12 @@
 [package]
-name = "pose_estimation"
+name = "ailia-sys"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-opencv = "*"
-ailia = { path="../rust_wrapper/" }
-anyhow = "*"
+libc = "0.2.139"
+
+[build-dependencies]
+bindgen = "0.63.0"

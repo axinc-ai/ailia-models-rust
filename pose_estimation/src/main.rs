@@ -34,7 +34,7 @@ fn main() -> Result<()> {
     pose_estimator.set_input_shape(shape)?;
     println!("build model");
 
-    let window = "YOLOX infered by ailia SDK";
+    let window = "PoseEstimation infered by ailia SDK";
     highgui::named_window(window, highgui::WINDOW_AUTOSIZE)?;
     let mut cam = videoio::VideoCapture::new(0, videoio::CAP_ANY)?; // 0 is the default camera
     let opened = videoio::VideoCapture::is_opened(&cam)?;

@@ -9,6 +9,26 @@ This repository is an example of using the ailia SDK from rust.
 
 ## Usage
 
+## Install ailia SDK
+
+```
+git submodule init
+git submodule update
+```
+
+## Download license file
+
+Download the ailia SDK license file with the following command. The license file is valid for one month.
+
+```
+cd ailia
+python3 download_license.py
+```
+
+Alternatively, the license file can be obtained by requesting the evaluation version of the ailia SDK.
+
+[Request trial version](https://axinc.jp/en/trial/)
+
 ### Path configuration
 
 for linux user

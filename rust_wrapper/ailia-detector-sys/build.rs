@@ -6,7 +6,8 @@ fn main() {
     let ailia_path = env::var("AILIA_BIN_DIR").expect("Please specify AILIA_BIN_DIR");
     let ailia_include_dir = env::var("AILIA_INC_DIR").expect("Please set AILIA_INC_DIR");
 
-    println!("cargo:rustc-link-search=native={}", ailia_path);
+    let src_path = PathBuf::from("src");
+    println!("cargo:rustc-link-search=native={}", src_path.join(ailia_path).display());
     println!("cargo:rustc-link-lib=dylib=ailia");
     println!("cargo:rerun-if-changed=wrapper.h");
     

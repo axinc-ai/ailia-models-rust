@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 ailia = { path="../rust_wrapper/" }
-opencv = "0.76.2"
+opencv = {version = "0.91.3", features = ["clang-runtime"]}
 anyhow = "1.0.68"

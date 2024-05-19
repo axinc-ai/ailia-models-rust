@@ -3,7 +3,7 @@ use ailia::prelude::*;
 use opencv::core::{Mat, Point, Rect, Scalar};
 use opencv::highgui;
 use opencv::imgproc::{cvt_color, put_text, rectangle, COLOR_BGR2RGBA, COLOR_RGBA2BGR};
-use opencv::prelude::MatTraitConstManual;
+use opencv::prelude::*;
 use opencv::videoio::{self, VideoCaptureTrait, VideoCaptureTraitConst};
 
 use anyhow::Result;
@@ -128,8 +128,8 @@ fn plot_image(img: &mut Mat, obj: &Object, width: usize, height: usize) {
 
 fn main() -> Result<()> {
     let detector = DetectorBuilder::default()
-        .prototxt("./yolox_s.opt.onnx.prototxt")
-        .onnx("./yolox_s.opt.onnx")
+        .prototxt("./../models/yolox_s.opt.onnx.prototxt")
+        .onnx("./../models/yolox_s.opt.onnx")
         .algorithm(AILIA_DETECTOR_ALGORITHM_YOLOX)
         .category_count(COCO_CATEGORY.len().try_into()?)
         .build()?;

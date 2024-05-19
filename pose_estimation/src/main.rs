@@ -4,7 +4,7 @@ use anyhow::Result;
 use opencv::core::{Mat, Point, Size, Scalar};
 use opencv::highgui;
 use opencv::imgproc::{cvt_color, circle, resize, COLOR_BGRA2BGR};
-use opencv::prelude::MatTraitConstManual;
+use opencv::prelude::*;
 use opencv::videoio::{self, VideoCaptureTrait, VideoCaptureTraitConst};
 
 const WIDTH: u32 = 320;

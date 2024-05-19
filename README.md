@@ -4,8 +4,8 @@ This repository is an example of using the ailia SDK from rust.
 
 ## Requirements
 * `opencv` 4.7.0 or later
-* `rust` 1.56.0 or later
-* `ailia SDK` 1.2.13 or later
+* `rust` 1.78.0 or later
+* `ailia SDK` 1.3.0 or later
 
 ## Usage
 
@@ -32,17 +32,19 @@ Alternatively, the license file can be obtained by requesting the evaluation ver
 ### Path configuration
 
 for linux user
+
 ```bash
-export AILIA_INC_DIR=../ailia/library/include
-export AIILA_BIN_DIR=../ailia/library/linux
-export LD_LIBRARY_PATH=../ailia/library/linux:LD_LIBRARY_PATH
+export AILIA_INC_DIR=../../ailia/library/include
+export AILIA_BIN_DIR=../../ailia/library/linux
+export LD_LIBRARY_PATH=../../ailia/library/linux:LD_LIBRARY_PATH
 ```
 
 for mac user
+
 ```bash
-export AILIA_INC_DIR=../ailia/library/include
-export AIILA_BIN_DIR=../ailia/library/mac
-export DYLD_LIBRARY_PATH=../ailia/library/mac:DYLD_LIBRARY_PATH
+export AILIA_INC_DIR=../../ailia/library/include
+export AILIA_BIN_DIR=../../ailia/library/mac
+export DYLD_LIBRARY_PATH=../../ailia/library/mac:DYLD_LIBRARY_PATH
 ```
 
 download model
@@ -52,9 +54,12 @@ python3 download_onnx.py --url_dir detic --model Detic_C2_SwinB_896_4x_IN-21K+CO
 ```
 
 build
+
 ```
 cd detic
-cargo run --release
+cargo update
+cargo clean
+cargo build
 ```
 
 ## Models

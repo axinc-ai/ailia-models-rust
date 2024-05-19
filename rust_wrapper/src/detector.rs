@@ -9,7 +9,7 @@ use ailia_sys::*;
 use image::RgbaImage;
 
 use opencv::core::Mat;
-use opencv::prelude::MatTraitConstManual;
+use opencv::prelude::*;
 
 use crate::network::Network;
 use crate::AiliaError;

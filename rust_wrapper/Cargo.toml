@@ -10,5 +10,5 @@ ailia-sys = { path = "./ailia-sys/" }
 # ailia-detector-sys = { path = "./ailia-detector-sys/" }
 thiserror = "1.0.38"
 image = "0.24.5"
-opencv = "0.76.1"
+opencv = {version = "0.91.3", features = ["clang-runtime"]}
 num-traits = "0.2.15"

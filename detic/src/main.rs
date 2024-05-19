@@ -58,7 +58,7 @@ fn preprocess(img: RgbImage, max_width: u32) -> (Vec<f32>, [i64;2]) {
     (vec, [resize_height as i64, resize_width as i64])
 }
 
-fn draw_bb()
+//fn draw_bb()
 
 fn main() -> Result<()> {
     let net = Network::new(
